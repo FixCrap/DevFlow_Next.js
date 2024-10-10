@@ -48,13 +48,13 @@ export default function RootLayout({
 						},
 					}}>
 					<ThemeProvider>
-						<SignedOut>
+						{/* <SignedOut>
 							<SignInButton />
 						</SignedOut>
-						<SignedIn>
-							<UserButton />
-						</SignedIn>
-						<h1 className='h1-bold'>This is a piece of text</h1>
+						<SignedIn> */}
+						{/* <UserButton /> */}
+						{/* </SignedIn> */}
+
 						{children}
 					</ThemeProvider>
 				</ClerkProvider>
