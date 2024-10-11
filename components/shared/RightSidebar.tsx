@@ -5,18 +5,18 @@ import RenderTag from "./RenderTag";
 
 const RightSidebar = () => {
 	const hotQuestions = [
-		{ _id: 1, title: "How do i use express as a custom server in NextJS" },
-		{ _id: 3, title: "How do i make chey mou, love me?" },
-		{ _id: 4, title: "How do i go to Paris to Stalk her?" },
-		{ _id: 5, title: "How do i kill a person in Paris in hide it?" },
+		{ _id: "1", title: "How do i use express as a custom server in NextJS" },
+		{ _id: "3", title: "How do i make chey mou, love me?" },
+		{ _id: "4", title: "How do i go to Paris to Stalk her?" },
+		{ _id: "5", title: "How do i kill a person in Paris in hide it?" },
 	];
 
 	const popularTags = [
-		{ _id: 1, name: "Javascript", totalQuestions: 5 },
-		{ _id: 2, name: "React", totalQuestions: 35 },
-		{ _id: 3, name: "Next", totalQuestions: 15 },
-		{ _id: 4, name: "vue", totalQuestions: 3 },
-		{ _id: 5, name: "redux", totalQuestions: 8 },
+		{ _id: "1", name: "Javascript", totalQuestions: 5 },
+		{ _id: "2", name: "React", totalQuestions: 35 },
+		{ _id: "3", name: "Next", totalQuestions: 15 },
+		{ _id: "4", name: "vue", totalQuestions: 3 },
+		{ _id: "5", name: "redux", totalQuestions: 8 },
 	];
 
 	return (
@@ -37,6 +37,7 @@ const RightSidebar = () => {
 								width={20}
 								height={20}
 								className='invert-colors'
+								alt='right arrow'
 							/>
 						</Link>
 					))}
