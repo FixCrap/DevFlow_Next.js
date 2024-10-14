@@ -5,46 +5,52 @@ import NoResults from "@/components/shared/NoResults";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-const questions = [
-	{
-		_id: 1,
-		title: "Chey mou message me!",
-		tags: [
-			{ _id: 1, name: "Agapi" },
-			{ _id: 2, name: "Ti einai?" },
-		],
-		author: {
-			_id: "1",
-			name: "John Doe",
-			picture: "john-doe.jpg",
-		},
-		upvotes: 1353454360,
-		views: 10000000,
-		answers: [],
-		createdAt: new Date("2023-09-01T12:00:00.000Z"),
-	},
-	{
-		_id: 1,
-		title: "Chey mou message me!",
-		tags: [
-			{ _id: 1, name: "Agapi" },
-			{ _id: 2, name: "Ti einai?" },
-		],
-		author: {
-			_id: "1",
-			name: "John Doe",
-			picture: "john-doe.jpg",
-		},
-		upvotes: 10,
-		views: 100,
-		answers: [],
-		createdAt: new Date("2021-09-01T12:00:00.000Z"),
-	},
-];
+// //Fake Questions:
+// const questions = [
+// 	{
+// 		_id: "1",
+// 		title: "Chey mou message me!",
+// 		tags: [
+// 			{ _id: "1", name: "Agapi" },
+// 			{ _id: "2", name: "Ti einai?" },
+// 		],
+// 		author: {
+// 			_id: "1",
+// 			name: "John Doe",
+// 			picture: "john-doe.jpg",
+// 		},
+// 		upvotes: 1353454360,
+// 		views: 10000000,
+// 		answers: [],
+// 		createdAt: new Date("2023-09-01T12:00:00.000Z"),
+// 	},
+// 	{
+// 		_id: "2",
+// 		title: "Chey mou message me!",
+// 		tags: [
+// 			{ _id: "1", name: "Agapi" },
+// 			{ _id: "2", name: "Ti einai?" },
+// 		],
+// 		author: {
+// 			_id: "1",
+// 			name: "John Doe",
+// 			picture: "john-doe.jpg",
+// 		},
+// 		upvotes: 10,
+// 		views: 100,
+// 		answers: [],
+// 		createdAt: new Date("2021-09-01T12:00:00.000Z"),
+// 	},
+// ];
 
-const Home = () => {
+const Home = async () => {
+	const result = await getQuestions({});
+
+	console.log(result.questions);
+
 	return (
 		<>
 			<div className='flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center'>
@@ -76,8 +82,8 @@ const Home = () => {
 			<div className='mt-10 flex w-full flex-col gap-6 '>
 				{/* Looping through Guestions */}
 
-				{questions.length > 0 ? (
-					questions.map((question) => (
+				{result.questions.length > 0 ? (
+					result.questions.map((question) => (
 						<QuestionCard
 							key={question._id}
 							_id={question._id}

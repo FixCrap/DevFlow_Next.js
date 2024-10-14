@@ -20,12 +20,20 @@ import { Input } from "@/components/ui/input";
 import { QuestionsSchema } from "@/lib/validations";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter, usePathname } from "next/navigation";
 
 const type: any = "create";
 
-const Question = () => {
+interface Props {
+	mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
 	const editorRef = useRef(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const router = useRouter();
+	const pathname = usePathname();
 
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof QuestionsSchema>>({
@@ -38,13 +46,23 @@ const Question = () => {
 	});
 
 	// 2. Define a submit handler.
-	function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+	async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
 		setIsSubmitting(true);
 
 		try {
 			// make an async call to your API -> create a question
 			// contain all form data
 			// navigate to home page
+			await createQuestion({
+				title: values.title,
+				content: values.explanation,
+				tags: values.tags,
+				author: JSON.parse(mongoUserId),
+				path: pathname,
+			});
+
+			// navigate to home page
+			router.push("/");
 		} catch (error) {
 		} finally {
 			setIsSubmitting(false);
@@ -68,6 +86,7 @@ const Question = () => {
 						message: "Tag must be less than 15 characters.",
 					});
 				}
+
 				if (!field.value.includes(tagValue as never)) {
 					form.setValue("tags", [...field.value, tagValue]);
 					tagInput.value = "";
@@ -130,6 +149,8 @@ const Question = () => {
 									editorRef.current = editor;
 								}}
 								initialValue=''
+								onBlur={field.onBlur}
+								onEditorChange={(content) => field.onChange(content)}
 								init={{
 									height: 350,
 									menubar: false,
@@ -170,15 +191,14 @@ const Question = () => {
 					control={form.control}
 					name='tags'
 					render={({ field }) => (
-						<FormItem className='flex w-full flex-col gap-3'>
+						<FormItem className='flex w-full flex-col'>
 							<FormLabel className='paragraph-semibold text-dark400_light800'>
-								Tags
-								<span className='text-primary-500'>*</span>
+								Tags <span className='text-primary-500'>*</span>
 							</FormLabel>
-							<FormControl className='mt-3.5 '>
+							<FormControl className='mt-3.5'>
 								<>
 									<Input
-										className='no-focus pragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border'
+										className='no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border'
 										placeholder='Add tags...'
 										onKeyDown={(e) => handleInputKeyDown(e, field)}
 									/>
