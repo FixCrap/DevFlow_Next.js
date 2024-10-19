@@ -22,6 +22,7 @@ import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
 import { useRouter, usePathname } from "next/navigation";
+import { useTheme } from "@/context/ThemeProvider";
 
 const type: any = "create";
 
@@ -34,6 +35,7 @@ const Question = ({ mongoUserId }: Props) => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const router = useRouter();
 	const pathname = usePathname();
+	const { mode } = useTheme();
 
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof QuestionsSchema>>({
@@ -115,17 +117,17 @@ const Question = ({ mongoUserId }: Props) => {
 					render={({ field }) => (
 						<FormItem className='flex w-full flex-col'>
 							<FormLabel className='paragraph-semibold text-dark400_light800'>
-								Questions Title<span className='text-primary-500'>*</span>
+								Question Title <span className='text-primary-500'>*</span>
 							</FormLabel>
-							<FormControl className='mt-3.5 '>
+							<FormControl className='mt-3.5'>
 								<Input
-									className='no-focus pragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border'
+									className='no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border'
 									{...field}
 								/>
 							</FormControl>
 							<FormDescription className='body-regular mt-2.5 text-light-500'>
-								Be specific and imagine you're asking a question to another
-								person
+								Be specific and imagine you&apos;re asking a question to another
+								person.
 							</FormDescription>
 							<FormMessage className='text-red-500' />
 						</FormItem>
@@ -135,50 +137,51 @@ const Question = ({ mongoUserId }: Props) => {
 					control={form.control}
 					name='explanation'
 					render={({ field }) => (
-						<FormItem className='flex w-full flex-col'>
+						<FormItem className='flex w-full flex-col gap-3'>
 							<FormLabel className='paragraph-semibold text-dark400_light800'>
-								Detailed explanation of your problem
+								Detailed explanation of your problem{" "}
 								<span className='text-primary-500'>*</span>
 							</FormLabel>
-							{/*Editor compnent from TinyMCE / The question Editor lesson */}
-
-							<Editor
-								apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
-								onInit={(_evt, editor) => {
-									//@ts-ignore
-									editorRef.current = editor;
-								}}
-								initialValue=''
-								onBlur={field.onBlur}
-								onEditorChange={(content) => field.onChange(content)}
-								init={{
-									height: 350,
-									menubar: false,
-									plugins: [
-										"advlist",
-										"autolink",
-										"lists",
-										"link",
-										"image",
-										"charmap",
-										"preview",
-										"anchor",
-										"searchreplace",
-										"visualblocks",
-										"codesample",
-										"fullscreen",
-										"insertdatetime",
-										"media",
-										"table",
-									],
-									toolbar:
-										"undo redo | blocks | " +
-										"codesample | bold italic forecolor | alignleft aligncenter " +
-										"alignright alignjustify | bullist numlist",
-									content_style: "body { font-family:Inter, font-size:16px }",
-								}}
-							/>
-
+							<FormControl className='mt-3.5'>
+								<Editor
+									apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+									onInit={(evt, editor) => {
+										// @ts-ignore
+										editorRef.current = editor;
+									}}
+									onBlur={field.onBlur}
+									onEditorChange={(content) => field.onChange(content)}
+									initialValue=''
+									init={{
+										height: 350,
+										menubar: false,
+										plugins: [
+											"advlist",
+											"autolink",
+											"lists",
+											"link",
+											"image",
+											"charmap",
+											"preview",
+											"anchor",
+											"searchreplace",
+											"visualblocks",
+											"codesample",
+											"fullscreen",
+											"insertdatetime",
+											"media",
+											"table",
+										],
+										toolbar:
+											"undo redo | " +
+											"codesample | bold italic forecolor | alignleft aligncenter |" +
+											"alignright alignjustify | bullist numlist",
+										content_style: "body { font-family:Inter; font-size:16px }",
+										skin: mode === "dark" ? "oxide-dark" : "oxide",
+										content_css: mode === "dark" ? "dark" : "light",
+									}}
+								/>
+							</FormControl>
 							<FormDescription className='body-regular mt-2.5 text-light-500'>
 								Introduce the problem and expand on what you put in the title.
 								Minimum 20 characters.
