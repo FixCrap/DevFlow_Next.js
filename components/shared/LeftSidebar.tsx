@@ -19,6 +19,7 @@ const LeftSidebar = () => {
 						(pathname.includes(item.route) && item.route.length > 1) ||
 						pathname === item.route;
 
+					// TODO PROFILE ID //
 					if (item.route === "/profile") {
 						if (userId) {
 							item.route = `${item.route}/${userId}`;
@@ -26,7 +27,7 @@ const LeftSidebar = () => {
 							return null;
 						}
 					}
-
+					////////////////////
 					return (
 						<Link
 							href={item.route}
